@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3e61b4a5-c517-40bd-97bf-8a80358a0d93" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="2271a3d2-28eb-481d-952b-4104c10114f1" >
+		<http:request-connection host="localhost" port="8081" />
+	</http:request-config>
+	<flow name="helloFlow" doc:id="ca18afd2-501a-4dff-ac8b-8b2197e73661" >
+		<http:listener doc:name="GET /hello" doc:id="f0046443-3544-4e5f-9451-2190d867a50e" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="GET"/>
+		<set-payload value="Hello" doc:name="Hello" doc:id="0d1049a6-7f9f-401b-8d1b-9275e4c5ebe6" />
+		<http:request method="GET" doc:name="GET /goodbye" doc:id="708740b9-1fa1-49b9-83d4-f0e15b857701" path="/goodbye" config-ref="HTTP_Request_configuration" responseTimeout="300000"/>
+		<logger level="INFO" doc:name="Logger" doc:id="58d90cd7-8336-4aa0-b691-7b03e94808ca" />
+	</flow>
+	<flow name="goodbyeFlow" doc:id="6eec5edc-5fc0-4748-9f13-4a2df17bddbd" >
+		<http:listener doc:name="Listener" doc:id="ec4f6fac-c189-4078-8739-03a4ca73cbe6" config-ref="HTTP_Listener_config" path="/goodbye" allowedMethods="GET"/>
+		<set-payload value="Goodbye" doc:name="Goodbye" doc:id="20182e6c-8562-4bc4-8668-d446f545bf8a" />
+		<logger level="INFO" doc:name="Logger" doc:id="71825169-8a2c-4c12-bdd3-4d838ce173cb" />
+	</flow>
+</mule>
